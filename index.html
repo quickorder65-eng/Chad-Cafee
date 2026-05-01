@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chad Cafe — Ешь. Читай. Отдыхай. | Алматы</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:       #F7F2E9;
+      --beige:       #EDE5D4;
+      --caramel:     #C8874E;
+      --caramel-lt:  #D9A46A;
+      --brown:       #6B3F1F;
+      --choco:       #2C1810;
+      --text:        #3A2415;
+      --text-muted:  #7A5C42;
+      --white:       #FFFDF9;
+      --gold:        #D4A853;
+      --radius:      16px;
+      --shadow:      0 8px 32px rgba(44,24,16,.12);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--beige); }
+    ::-webkit-scrollbar-thumb { background: var(--caramel); border-radius: 3px; }
+
+    .container { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 96px 0; }
+    .section-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'DM Sans', sans-serif; font-size: 10px; font-weight: 700;
+      letter-spacing: .22em; text-transform: uppercase; color: var(--caramel);
+      margin-bottom: 16px;
+    }
+    .section-tag::before { content: ''; width: 28px; height: 2px; background: var(--caramel); }
+    .section-title {
+      font-family: 'Fraunces', serif; font-size: clamp(32px, 4vw, 52px);
+      font-weight: 700; line-height: 1.14; color: var(--choco);
+      letter-spacing: -.015em; margin-bottom: 20px;
+    }
+    .section-sub {
+      font-size: 16px; font-weight: 300; color: var(--text-muted); max-width: 560px; line-height: 1.8;
+    }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 28px; border-radius: 50px; font-size: 13px; font-weight: 600;
+      letter-spacing: .08em; text-transform: uppercase; cursor: pointer; border: none; text-decoration: none;
+      transition: all .25s ease;
+    }
+    .btn-primary {
+      background: var(--caramel); color: #fff;
+      box-shadow: 0 4px 20px rgba(200,135,78,.35);
+    }
+    .btn-primary:hover { background: var(--brown); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(107,63,31,.35); }
+    .btn-outline {
+      background: transparent; color: var(--choco);
+      border: 2px solid rgba(44,24,16,.2);
+    }
+    .btn-outline:hover { border-color: var(--caramel); color: var(--caramel); transform: translateY(-2px); }
+    .btn-ghost {
+      background: rgba(255,255,255,.08); color: rgba(255,255,255,.8);
+      border: 1px solid rgba(255,255,255,.12);
+    }
+    .btn-ghost:hover { background: var(--caramel); color: #fff; transform: translateY(-2px); }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 0 24px; height: 72px;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: background .3s, backdrop-filter .3s, box-shadow .3s;
+    }
+    nav.scrolled {
+      background: rgba(247,242,233,.93);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 2px 24px rgba(44,24,16,.08);
+    }
+    .nav-logo { display: flex; flex-direction: column; line-height: 1; text-decoration: none; }
+    .nav-logo-main { font-family: 'Fraunces', serif; font-size: 21px; font-weight: 700; letter-spacing: -.01em; color: var(--choco); }
+    .nav-logo-sub { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 12px; color: var(--caramel); letter-spacing: .03em; }
+    .nav-links { display: flex; align-items: center; gap: 36px; list-style: none; }
+    .nav-links a { text-decoration: none; font-size: 12px; font-weight: 500; color: var(--text-muted); letter-spacing: .1em; text-transform: uppercase; transition: color .2s; }
+    .nav-links a:hover { color: var(--caramel); }
+    .burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; background: none; border: none; }
+    .burger span { display: block; width: 24px; height: 2px; background: var(--choco); border-radius: 2px; transition: all .3s; }
+    .burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .burger.open span:nth-child(2) { opacity: 0; }
+    .burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .mobile-menu {
+      display: none; position: fixed; top: 72px; left: 0; right: 0; z-index: 99;
+      background: rgba(247,242,233,.97); backdrop-filter: blur(16px);
+      padding: 28px 24px 36px; flex-direction: column; gap: 0;
+      box-shadow: 0 16px 32px rgba(44,24,16,.1);
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      text-decoration: none; font-size: 18px; font-weight: 500;
+      color: var(--text); padding: 14px 0; border-bottom: 1px solid rgba(44,24,16,.07);
+      transition: color .2s;
+    }
+    .mobile-menu a:hover { color: var(--caramel); }
+    .mobile-menu .btn { margin-top: 20px; justify-content: center; }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh; position: relative; overflow: hidden;
+      display: flex; align-items: center; padding-top: 72px;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 62% 40%, rgba(200,135,78,.14) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 70% at 8% 80%, rgba(107,63,31,.09) 0%, transparent 55%),
+        linear-gradient(162deg, #F7F2E9 0%, #EDE5D4 48%, #E2D2B8 100%);
+    }
+    .hero-decor { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .hero-decor-blob {
+      position: absolute; border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,135,78,.11), transparent 70%);
+    }
+    .hero-decor-blob:nth-child(1) { width: 640px; height: 640px; top: -140px; right: -100px; }
+    .hero-decor-blob:nth-child(2) { width: 380px; height: 380px; bottom: -80px; left: -80px; }
+    .hero-inner {
+      position: relative; z-index: 1; width: 100%;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,.72); backdrop-filter: blur(8px);
+      border: 1px solid rgba(200,135,78,.22); border-radius: 50px;
+      padding: 8px 18px; margin-bottom: 28px;
+      font-size: 13px; font-weight: 500; color: var(--brown);
+    }
+    .stars { color: var(--gold); letter-spacing: 2px; font-size: 12px; }
+    .hero-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(52px, 6.5vw, 88px);
+      font-weight: 800; line-height: 1.02; color: var(--choco); margin-bottom: 24px;
+      letter-spacing: -.03em;
+    }
+    .hero-title em { font-style: italic; color: var(--caramel); font-weight: 700; }
+    .hero-sub { font-size: 17px; font-weight: 300; color: var(--text-muted); line-height: 1.82; margin-bottom: 40px; max-width: 460px; }
+    .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+    .hero-info {
+      display: flex; gap: 32px; margin-top: 52px; padding-top: 36px;
+      border-top: 1px solid rgba(44,24,16,.1);
+    }
+    .hero-info-item { display: flex; flex-direction: column; gap: 3px; }
+    .hero-info-label { font-size: 9px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--text-muted); }
+    .hero-info-value { font-size: 14px; font-weight: 500; color: var(--choco); letter-spacing: -.01em; }
+
+    /* Hero visual */
+    .hero-visual { display: flex; flex-direction: column; gap: 18px; }
+    .hero-img-main {
+      width: 100%; height: 360px; border-radius: 24px; overflow: hidden; position: relative;
+      background: linear-gradient(138deg, #C8874E 0%, #8B4513 48%, #2C1810 100%);
+      box-shadow: var(--shadow);
+    }
+    .hero-img-main-inner {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      font-size: 90px; opacity: .14;
+    }
+    .hero-float-card {
+      position: absolute; bottom: 22px; left: 22px;
+      background: rgba(255,255,255,.92); backdrop-filter: blur(12px);
+      border-radius: 14px; padding: 14px 18px;
+      box-shadow: 0 8px 24px rgba(44,24,16,.15);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .hero-float-icon { font-size: 28px; }
+    .hero-float-text { display: flex; flex-direction: column; gap: 1px; }
+    .hero-float-title { font-size: 13px; font-weight: 600; color: var(--choco); }
+    .hero-float-sub { font-size: 11px; color: var(--text-muted); }
+    .hero-img-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .hero-img-sm {
+      height: 158px; border-radius: 18px; position: relative;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 44px; opacity: 1; overflow: hidden;
+    }
+    .hero-img-sm::after { content: attr(data-icon); opacity: .22; font-size: 52px; }
+    .hero-img-sm-a { background: linear-gradient(138deg, #D9A46A, #C8874E); }
+    .hero-img-sm-b { background: linear-gradient(138deg, #9B5C2A, #6B3F1F); }
+
+    /* ABOUT */
+    #about { background: var(--white); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
+    .about-visual { position: relative; }
+    .about-img {
+      width: 100%; height: 500px; border-radius: 24px;
+      background: linear-gradient(158deg, #C8874E 0%, #8B4513 42%, #2C1810 100%);
+      position: relative; overflow: hidden; box-shadow: var(--shadow);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .about-img-icon { font-size: 110px; opacity: .1; }
+    .about-img::before {
+      content: ''; position: absolute; inset: 0; z-index: 0;
+      background: repeating-linear-gradient(
+        0deg, rgba(255,255,255,.03) 0px, rgba(255,255,255,.03) 1px, transparent 1px, transparent 44px
+      ),
+      repeating-linear-gradient(
+        90deg, rgba(255,255,255,.03) 0px, rgba(255,255,255,.03) 1px, transparent 1px, transparent 44px
+      );
+    }
+    .about-badge {
+      position: absolute; right: -28px; bottom: 52px;
+      background: var(--caramel); color: #fff; border-radius: 18px;
+      padding: 20px 26px; box-shadow: 0 12px 40px rgba(200,135,78,.4);
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .about-badge-num { font-family: 'Fraunces', serif; font-size: 38px; font-weight: 700; line-height: 1; letter-spacing: -.02em; }
+    .about-badge-label { font-size: 11px; font-weight: 600; letter-spacing: .08em; opacity: .88; }
+    .about-features { display: flex; flex-direction: column; gap: 18px; margin-top: 36px; }
+    .about-feature {
+      display: flex; gap: 16px; align-items: flex-start;
+      padding: 20px; background: var(--cream); border-radius: var(--radius);
+      transition: transform .25s, box-shadow .25s;
+    }
+    .about-feature:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+    .about-feature-icon {
+      font-size: 24px; width: 48px; height: 48px; min-width: 48px;
+      background: var(--white); border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 8px rgba(44,24,16,.07);
+    }
+    .about-feature-title { font-size: 15px; font-weight: 600; color: var(--choco); margin-bottom: 4px; letter-spacing: -.01em; }
+    .about-feature-desc { font-size: 13px; font-weight: 300; color: var(--text-muted); line-height: 1.65; }
+
+    /* MENU */
+    #menu { background: var(--cream); }
+    .menu-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 56px; }
+    .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 22px; }
+    .menu-card {
+      background: var(--white); border-radius: 20px; overflow: hidden;
+      box-shadow: 0 4px 16px rgba(44,24,16,.07);
+      transition: transform .3s, box-shadow .3s;
+    }
+    .menu-card:hover { transform: translateY(-6px); box-shadow: 0 18px 44px rgba(44,24,16,.14); }
+    .menu-card-img {
+      height: 200px; position: relative;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 58px; overflow: hidden;
+    }
+    .menu-card-img::after { content: attr(data-icon); opacity: .22; }
+    .menu-card-tag {
+      position: absolute; top: 14px; left: 14px;
+      background: rgba(255,255,255,.88); border-radius: 50px;
+      padding: 4px 12px; font-size: 11px; font-weight: 600; color: var(--brown); letter-spacing: .06em;
+    }
+    .menu-card-body { padding: 20px 22px 24px; }
+    .menu-card-name { font-family: 'Fraunces', serif; font-size: 19px; font-weight: 600; color: var(--choco); margin-bottom: 8px; line-height: 1.25; letter-spacing: -.01em; }
+    .menu-card-desc { font-size: 13px; font-weight: 300; color: var(--text-muted); line-height: 1.68; margin-bottom: 18px; }
+    .menu-card-footer { display: flex; justify-content: space-between; align-items: center; }
+    .menu-card-price { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 600; color: var(--caramel); letter-spacing: -.01em; }
+    .menu-card-price span { font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 400; color: var(--text-muted); letter-spacing: .04em; }
+
+    .mc-1 { background: linear-gradient(135deg, #F5D5A0, #E8A86B); }
+    .mc-2 { background: linear-gradient(135deg, #FFF0D0, #FFB347); }
+    .mc-3 { background: linear-gradient(135deg, #C0392B, #8B2318); }
+    .mc-4 { background: linear-gradient(135deg, #2C7744, #1A4D2E); }
+    .mc-5 { background: linear-gradient(135deg, #6B3F1F, #3D1F0A); }
+    .mc-6 { background: linear-gradient(135deg, #F5E6C8, #D4B896); }
+    .mc-7 { background: linear-gradient(135deg, #E8A86B, #C8874E); }
+    .mc-8 { background: linear-gradient(135deg, #4A7C4E, #2D5530); }
+    .mc-9 { background: linear-gradient(135deg, #D4A853, #A67C30); }
+
+    /* ATMOSPHERE */
+    #atmosphere { background: var(--choco); }
+    #atmosphere .section-title { color: var(--white); }
+    #atmosphere .section-sub { color: rgba(255,255,255,.5); }
+    #atmosphere .section-tag { color: var(--caramel-lt); }
+    #atmosphere .section-tag::before { background: var(--caramel-lt); }
+    .atmo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 22px; margin-top: 56px; }
+    .atmo-card {
+      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08);
+      border-radius: 20px; padding: 36px 28px;
+      transition: background .3s, transform .3s, box-shadow .3s;
+    }
+    .atmo-card:hover { background: rgba(200,135,78,.14); transform: translateY(-4px); box-shadow: 0 18px 44px rgba(0,0,0,.28); }
+    .atmo-icon {
+      font-size: 34px; width: 64px; height: 64px; border-radius: 16px;
+      background: rgba(200,135,78,.14);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 22px;
+    }
+    .atmo-title { font-family: 'Fraunces', serif; font-size: 21px; font-weight: 600; color: var(--white); margin-bottom: 10px; line-height: 1.25; letter-spacing: -.01em; }
+    .atmo-desc { font-size: 14px; font-weight: 300; color: rgba(255,255,255,.48); line-height: 1.76; }
+
+    /* REVIEWS */
+    #reviews { background: var(--beige); }
+    .reviews-header { margin-bottom: 56px; }
+    .reviews-rating-row { display: flex; align-items: center; gap: 20px; margin-top: 24px; }
+    .big-rating { font-family: 'Fraunces', serif; font-size: 72px; font-weight: 700; color: var(--choco); line-height: 1; letter-spacing: -.03em; }
+    .rating-detail { display: flex; flex-direction: column; gap: 6px; }
+    .rating-stars { color: var(--gold); font-size: 22px; letter-spacing: 3px; }
+    .rating-count { font-size: 13px; color: var(--text-muted); }
+    .reviews-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 22px; }
+    .review-card {
+      background: var(--white); border-radius: 20px; padding: 28px;
+      box-shadow: 0 4px 16px rgba(44,24,16,.06);
+      transition: transform .3s, box-shadow .3s;
+      display: flex; flex-direction: column; gap: 14px;
+    }
+    .review-card:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(44,24,16,.12); }
+    .review-quote { font-size: 52px; font-family: 'Playfair Display', serif; color: var(--caramel); opacity: .28; line-height: .5; margin-bottom: -4px; }
+    .review-header { display: flex; align-items: center; gap: 14px; }
+    .review-avatar {
+      width: 46px; height: 46px; border-radius: 50%; font-size: 18px;
+      display: flex; align-items: center; justify-content: center; color: #fff;
+      font-weight: 700; flex-shrink: 0;
+    }
+    .rev-a1 { background: linear-gradient(135deg, #C8874E, #8B4513); }
+    .rev-a2 { background: linear-gradient(135deg, #6B3F1F, #3D1F0A); }
+    .rev-a3 { background: linear-gradient(135deg, #D4A853, #A67C30); }
+    .review-name { font-family: 'Fraunces', serif; font-size: 16px; font-weight: 600; color: var(--choco); letter-spacing: -.01em; }
+    .review-date { font-size: 11px; font-weight: 400; color: var(--text-muted); letter-spacing: .04em; }
+    .review-stars { color: var(--gold); font-size: 13px; letter-spacing: 3px; }
+    .review-text { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 15px; color: var(--text-muted); line-height: 1.76; }
+    .review-tag { align-self: flex-start; padding: 4px 12px; background: var(--cream); border-radius: 50px; font-size: 10px; font-weight: 700; color: var(--brown); letter-spacing: .1em; text-transform: uppercase; }
+
+    /* VISIT */
+    #visit { background: var(--white); }
+    .visit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
+    .visit-map {
+      width: 100%; height: 440px; border-radius: 24px; overflow: hidden;
+      background: linear-gradient(148deg, #D9A46A 0%, #C8874E 28%, #8B4513 58%, #4A2810 100%);
+      position: relative; box-shadow: var(--shadow);
+    }
+    .visit-map::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        repeating-linear-gradient(0deg, rgba(255,255,255,.03) 0, rgba(255,255,255,.03) 1px, transparent 1px, transparent 44px),
+        repeating-linear-gradient(90deg, rgba(255,255,255,.03) 0, rgba(255,255,255,.03) 1px, transparent 1px, transparent 44px);
+    }
+    .visit-map-pin {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -60%);
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+    }
+    .pin-dot {
+      width: 20px; height: 20px; background: var(--white); border-radius: 50%;
+      box-shadow: 0 0 0 6px rgba(255,255,255,.28);
+      animation: pinpulse 2.2s ease-in-out infinite;
+    }
+    @keyframes pinpulse {
+      0%, 100% { box-shadow: 0 0 0 6px rgba(255,255,255,.28); }
+      50% { box-shadow: 0 0 0 16px rgba(255,255,255,.1); }
+    }
+    .pin-label {
+      background: rgba(255,255,255,.95); color: var(--brown);
+      padding: 8px 18px; border-radius: 50px; font-size: 13px; font-weight: 600;
+      white-space: nowrap; box-shadow: 0 4px 18px rgba(0,0,0,.16);
+    }
+    .visit-info { display: flex; flex-direction: column; gap: 30px; }
+    .visit-detail { display: flex; gap: 18px; align-items: flex-start; }
+    .visit-detail-icon {
+      font-size: 22px; width: 52px; height: 52px; min-width: 52px;
+      background: var(--cream); border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 8px rgba(44,24,16,.06);
+    }
+    .visit-detail-label { font-size: 9px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+    .visit-detail-value { font-family: 'Fraunces', serif; font-size: 17px; font-weight: 600; color: var(--choco); line-height: 1.35; letter-spacing: -.01em; }
+    .visit-detail-sub { font-size: 13px; font-weight: 300; color: var(--text-muted); margin-top: 3px; }
+    .visit-btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 4px; }
+
+    /* FOOTER */
+    footer { background: var(--choco); padding: 60px 24px 36px; }
+    .footer-inner { max-width: 1160px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-start; gap: 48px; flex-wrap: wrap; }
+    .footer-logo-main { font-family: 'Fraunces', serif; font-size: 28px; font-weight: 700; color: var(--white); letter-spacing: -.02em; }
+    .footer-logo-sub { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 14px; color: var(--caramel-lt); display: block; margin-top: 4px; letter-spacing: .03em; }
+    .footer-desc { font-size: 13px; font-weight: 300; color: rgba(255,255,255,.38); max-width: 248px; margin-top: 12px; line-height: 1.75; }
+    .footer-col { display: flex; flex-direction: column; gap: 12px; }
+    .footer-col-title { font-size: 9px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--caramel-lt); margin-bottom: 4px; }
+    .footer-col a, .footer-col p { font-size: 13px; font-weight: 300; color: rgba(255,255,255,.42); text-decoration: none; transition: color .2s; line-height: 1.5; }
+    .footer-col a:hover { color: var(--caramel-lt); }
+    .footer-bottom {
+      max-width: 1160px; margin: 40px auto 0;
+      padding-top: 24px; border-top: 1px solid rgba(255,255,255,.08);
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+    }
+    .footer-copy { font-size: 12px; color: rgba(255,255,255,.22); }
+    .footer-demo { font-size: 11px; color: rgba(255,255,255,.18); background: rgba(255,255,255,.05); padding: 4px 14px; border-radius: 50px; }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .section { padding: 72px 0; }
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-visual { display: none; }
+      .hero-title { font-size: clamp(42px, 8vw, 64px); }
+      .about-grid, .visit-grid { grid-template-columns: 1fr; gap: 48px; }
+      .about-badge { right: 0; }
+      .menu-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+      .menu-header .section-sub { text-align: left; max-width: 100%; }
+      nav .nav-links, nav .nav-cta-desktop { display: none; }
+      .burger { display: flex; }
+    }
+    @media (max-width: 580px) {
+      .section { padding: 56px 0; }
+      .hero-info { flex-direction: column; gap: 16px; }
+      .hero-btns { flex-direction: column; }
+      .hero-btns .btn { justify-content: center; }
+      .reviews-rating-row { flex-direction: column; align-items: flex-start; gap: 12px; }
+      .footer-inner { flex-direction: column; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; }
+      .visit-btns { flex-direction: column; }
+      .visit-btns .btn { justify-content: center; }
+    }
+
+    /* SCROLL REVEAL */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-d1 { transition-delay: .1s; }
+    .reveal-d2 { transition-delay: .2s; }
+    .reveal-d3 { transition-delay: .3s; }
+    .reveal-d4 { transition-delay: .4s; }
+  </style>
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav id="navbar">
+    <a href="#hero" class="nav-logo">
+      <span class="nav-logo-main">Chad Cafe</span>
+      <span class="nav-logo-sub">Eat · Read · Chill</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#atmosphere">Atmosphere</a></li>
+      <li><a href="#reviews">Reviews</a></li>
+      <li><a href="#visit">Visit</a></li>
+    </ul>
+    <a href="tel:+77765326969" class="btn btn-primary nav-cta-desktop" style="font-size:11px;padding:10px 22px;">☎ Reserve a Table</a>
+    <button class="burger" id="burger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#about"       onclick="closeMobileMenu()">About</a>
+    <a href="#menu"        onclick="closeMobileMenu()">Menu</a>
+    <a href="#atmosphere"  onclick="closeMobileMenu()">Atmosphere</a>
+    <a href="#reviews"     onclick="closeMobileMenu()">Reviews</a>
+    <a href="#visit"       onclick="closeMobileMenu()">Visit</a>
+    <a href="tel:+77765326969" class="btn btn-primary">☎ Call Now</a>
+  </div>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-decor">
+      <div class="hero-decor-blob"></div>
+      <div class="hero-decor-blob"></div>
+    </div>
+    <div class="container">
+      <div class="hero-inner">
+        <div>
+          <div class="hero-badge">
+            <span class="stars">★★★★★</span>
+            <strong>4.7</strong>
+            <span style="color:var(--text-muted);font-weight:400;">— 449 reviews on Google</span>
+          </div>
+          <h1 class="hero-title">
+            Eat.<br/><em>Read.</em><br/>Chill.
+          </h1>
+          <p class="hero-sub">
+            Уютный уголок в самом сердце Алматы для неспешных завтраков, ароматного кофе, честных десертов и паузы от городского ритма. Приходи как есть — оставайся сколько хочешь.
+          </p>
+          <div class="hero-btns">
+            <a href="#menu" class="btn btn-primary">View Menu ↓</a>
+            <a href="tel:+77765326969" class="btn btn-outline">☎ Call to Book</a>
+          </div>
+          <div class="hero-info">
+            <div class="hero-info-item">
+              <span class="hero-info-label">Location</span>
+              <span class="hero-info-value">Gogol St 13, Almaty</span>
+            </div>
+            <div class="hero-info-item">
+              <span class="hero-info-label">Open Daily</span>
+              <span class="hero-info-value">Until 22:00</span>
+            </div>
+            <div class="hero-info-item">
+              <span class="hero-info-label">Avg. Bill</span>
+              <span class="hero-info-value">2 000 – 6 000 ₸</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hero-img-main">
+            <div class="hero-img-main-inner">☕</div>
+            <div class="hero-float-card">
+              <div class="hero-float-icon">☕</div>
+              <div class="hero-float-text">
+                <span class="hero-float-title">Specialty Coffee</span>
+                <span class="hero-float-sub">Plant-based milk available</span>
+              </div>
+            </div>
+          </div>
+          <div class="hero-img-row">
+            <div class="hero-img-sm hero-img-sm-a" data-icon="🥞"></div>
+            <div class="hero-img-sm hero-img-sm-b" data-icon="📚"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="section">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-visual reveal">
+          <div class="about-img">
+            <div class="about-img-icon">📖</div>
+          </div>
+          <div class="about-badge">
+            <span class="about-badge-num">4.7 ★</span>
+            <span class="about-badge-label">449 довольных гостей</span>
+          </div>
+        </div>
+
+        <div>
+          <span class="section-tag reveal">Our Story</span>
+          <h2 class="section-title reveal">Место, где<br/><em style="font-style:italic;color:var(--caramel);">чувствуешь себя дома</em></h2>
+          <p class="section-sub reveal">
+            Chad Cafe родился из простой идеи: место в Алматы, где можно нормально позавтракать, почитать в тишине, встретиться с другом за хорошим кофе — или просто выдохнуть.
+          </p>
+          <p class="section-sub reveal" style="margin-top:14px;">
+            Мы думаем о каждой детали — от мягкого дневного света в окнах до текстуры наших сырников. Без спешки и напускного. Только тепло, честная еда и команда, которой не всё равно.
+          </p>
+          <div class="about-features">
+            <div class="about-feature reveal reveal-d1">
+              <div class="about-feature-icon">🌿</div>
+              <div>
+                <div class="about-feature-title">Уютная атмосфера с характером</div>
+                <div class="about-feature-desc">Тёплый свет, тихая музыка, книги на полках — интерьер, который приглашает остаться дольше, чем планировал.</div>
+              </div>
+            </div>
+            <div class="about-feature reveal reveal-d2">
+              <div class="about-feature-icon">🍳</div>
+              <div>
+                <div class="about-feature-title">Честная еда, приготовленная с душой</div>
+                <div class="about-feature-desc">Каждое блюдо — из настоящих продуктов: авторские рецепты, сезонные ингредиенты и много заботы на кухне.</div>
+              </div>
+            </div>
+            <div class="about-feature reveal reveal-d3">
+              <div class="about-feature-icon">☕</div>
+              <div>
+                <div class="about-feature-title">Кофе, ради которого хочется встать</div>
+                <div class="about-feature-desc">Авторские эспрессо-напитки, овсяное и миндальное молоко, бариста, который запомнит твой заказ.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MENU -->
+  <section id="menu" class="section">
+    <div class="container">
+      <div class="menu-header">
+        <div>
+          <span class="section-tag reveal">Popular Picks</span>
+          <h2 class="section-title reveal">То, за чем<br/>возвращаются снова</h2>
+        </div>
+        <p class="section-sub reveal" style="text-align:right;max-width:300px;">
+          Блюда, которые гости заказывают снова и снова — классика, авторские рецепты и сезонные фавориты.
+        </p>
+      </div>
+
+      <div class="menu-grid">
+        <div class="menu-card reveal">
+          <div class="menu-card-img mc-1" data-icon="🥞"><span class="menu-card-tag">Breakfast</span></div>
+          <div class="menu-card-body">
+            <div class="menu-card-name">Author's Syrniki</div>
+            <div class="menu-card-desc">Творожные сырники с солёной карамелью и домашней сметаной — наш бестселлер с первого дня.</div>
+            <div class="menu-card-footer"><span class="menu-card-price">1 800 ₸ <span>/ serving</span></span></div>
+          </div>
+        </div>
+
+        <div class="menu-card reveal reveal-d1">
+          <div class="menu-card-img mc-2" data-icon="🍳"><span class="menu-card-tag">Breakfast</span></div>
+          <div class="menu-card-body">
+            <div class="menu-card-name">English Breakfast</div>
+            <div class="menu-card-desc">Яйца, бекон, бобы, запечённые томаты, грибы и тост — полноценное начало настоящего утра.</div>
+            <div class="menu-card-footer"><span class="menu-card-price">3 200 ₸ <span>/ plate</span></span></div>
+          </div>
+        </div>
+
+        <div class="menu-card reveal reveal-d2">
+          <div class="menu-card-img mc-3" data-icon="🍜"><span class="menu-card-tag">Main Course</span></div>
+          <div class="menu-card-body">
+            <div class="menu-card-name">Tom Yum</div>
+            <div class="menu-card-desc">Насыщенный тайский суп с кокосовым молоком, лемонграссом, листьями лайма и креветками. Согревает изнутри.</div>
+            <div class="menu-card-footer"><span class="menu-card-price">2 900 ₸ <span>/ bowl</span></span></div>
+          </div>
+        </div>
+
+        <div class="menu-card reveal">
+          <div class="menu-card-img mc-4" data-icon="🥑"><span class="menu-card-tag">Breakfast</span></div>
+          <div class="menu-card-body">
+            <div class="menu-card-name">Avocado Toast</div>
+            <div class="menu-card-desc">Хлеб на закваске, авокадо, яйцо пашот, черри-томаты, хлопья чили и капля оливкового масла.</div>
+            <div class="menu-card-footer"><span class="menu-card-price">2 400 ₸ <span>/ piece</span></span></div>
+          </div>
+        </div>
+
+        <div class="menu-card reveal reveal-d1">
+          <div class="menu-card-img mc-5" data-icon="☕"><span class="menu-card-tag">Drinks</span></div>
+          <div class="menu-card-body">
+            <div class="menu-card-name">Cappuccino</div>
+            <div class="menu-card-desc">Двойной эспрессо с нежной молочной пенкой. Доступно с овсяным, миндальным или кокосовым молоком.</div>
+            <div class="menu-card-footer"><span class="menu-card-price">900 ₸ <span>/ cup</span></span></div>
+          </div>
+        </div>
+
+        <div class="menu-card reveal reveal-d2">
+          <div class="menu-card-img mc-6" data-icon="🧇"><span class="menu-card-tag">Brunch</span></div>
+          <div class="menu-card-body">
+            <div class="menu-card-name">Waffles</div>
+            <div class="menu-card-desc">Хрустящие бельгийские вафли с сезонными ягодами, взбитыми сливками и тёплой карамелью — десерт в любое время дня.</div>
+            <div class="menu-card-footer"><span class="menu-card-price">1 600 ₸ <span>/ serving</span></span></div>
+          </div>
+        </div>
+
+        <div class="menu-card reveal">
+          <div class="menu-card-img mc-7" data-icon="🎂"><span class="menu-card-tag">Dessert</span></div>
+          <div class="menu-card-body">
+            <div class="menu-card-name">Pavlova</div>
+            <div class="menu-card-desc">Нежное безе с кремом маскарпоне, клубникой и курдом из маракуйи. Гости говорят — незабываемо.</div>
+            <div class="menu-card-footer"><span class="menu-card-price">1 900 ₸ <span>/ slice</span></span></div>
+          </div>
+        </div>
+
+        <div class="menu-card reveal reveal-d1">
+          <div class="menu-card-img mc-8" data-icon="🫛"><span class="menu-card-tag">Brunch</span></div>
+          <div class="menu-card-body">
+            <div class="menu-card-name">Zucchini Draniki & Salmon</div>
+            <div class="menu-card-desc">Оладьи из цукини с малосольным лососем, сливочным сыром и свежими огурцами. Лёгко, элегантно, сытно.</div>
+            <div class="menu-card-footer"><span class="menu-card-price">2 600 ₸ <span>/ serving</span></span></div>
+          </div>
+        </div>
+
+        <div class="menu-card reveal reveal-d2">
+          <div class="menu-card-img mc-9" data-icon="🍜"><span class="menu-card-tag">Main Course</span></div>
+          <div class="menu-card-body">
+            <div class="menu-card-name">Pad Thai</div>
+            <div class="menu-card-desc">Жареная рисовая лапша с креветками, тофу, яйцом, ростками сои и соусом тамаринд. Подаётся с арахисом и лаймом.</div>
+            <div class="menu-card-footer"><span class="menu-card-price">3 100 ₸ <span>/ plate</span></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ATMOSPHERE -->
+  <section id="atmosphere" class="section">
+    <div class="container">
+      <span class="section-tag reveal">The Vibe</span>
+      <h2 class="section-title reveal" style="color:var(--white);">Четыре причины<br/><em style="font-style:italic;color:var(--caramel-lt);">возвращаться снова</em></h2>
+      <p class="section-sub reveal" style="color:rgba(255,255,255,.5);">
+        Chad Cafe — это больше чем кафе. Это маленький мир, где время специально замедляется.
+      </p>
+      <div class="atmo-grid">
+        <div class="atmo-card reveal">
+          <div class="atmo-icon">🛋️</div>
+          <div class="atmo-title">Интерьер, который обнимает</div>
+          <div class="atmo-desc">Тёплое дерево, мягкий свет, разная керамика и полки с настоящими книгами. Каждый уголок создан, чтобы ты чувствовал себя как дома.</div>
+        </div>
+        <div class="atmo-card reveal reveal-d1">
+          <div class="atmo-icon">🌄</div>
+          <div class="atmo-title">Перед горами — сюда</div>
+          <div class="atmo-desc">Долгий завтрак здесь, потом поездка на Медеу — классическое алматинское утро. Открываемся рано, чтобы ты не пропустил лучший свет.</div>
+        </div>
+        <div class="atmo-card reveal reveal-d2">
+          <div class="atmo-icon">🌱</div>
+          <div class="atmo-title">Кофе по-твоему</div>
+          <div class="atmo-desc">Овсяное, миндальное, кокосовое или классическое — твой капучино, твои правила. Зерно с историей, бариста с навыком.</div>
+        </div>
+        <div class="atmo-card reveal reveal-d3">
+          <div class="atmo-icon">💻</div>
+          <div class="atmo-title">Работай, читай или просто будь</div>
+          <div class="atmo-desc">Никто не будет торопить. Бери книгу, ноутбук или хорошего друга. Плейлист тихий, Wi-Fi бесплатный, дозаправка приветствуется.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section id="reviews" class="section">
+    <div class="container">
+      <div class="reviews-header">
+        <span class="section-tag reveal">Guest Reviews</span>
+        <h2 class="section-title reveal">Что говорит<br/><em style="font-style:italic;color:var(--caramel);">Алматы о нас</em></h2>
+        <div class="reviews-rating-row reveal">
+          <div class="big-rating">4.7</div>
+          <div class="rating-detail">
+            <span class="rating-stars">★★★★★</span>
+            <span class="rating-count">449 reviews on Google</span>
+            <span style="font-size:12px;color:var(--text-muted);margin-top:2px;">Gogol St 13, Almaty</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="reviews-grid">
+        <div class="review-card reveal">
+          <div class="review-quote">"</div>
+          <div class="review-header">
+            <div class="review-avatar rev-a1">A</div>
+            <div>
+              <div class="review-name">Асель К.</div>
+              <div class="review-date">April 2025 · Google Maps</div>
+            </div>
+          </div>
+          <div class="review-stars">★★★★★</div>
+          <div class="review-text">
+            Пришла в субботу утром с сестрой. Павлова буквально таяла во рту — самое лёгкое безе, которое я когда-либо пробовала. Интерьер продуман до мелочей, каждый угол фотогеничен. Персонал тёплый и внимательный, без навязчивости. Точно вернёмся в следующие выходные.
+          </div>
+          <span class="review-tag">Павлова · Атмосфера</span>
+        </div>
+
+        <div class="review-card reveal reveal-d1">
+          <div class="review-quote">"</div>
+          <div class="review-header">
+            <div class="review-avatar rev-a2">D</div>
+            <div>
+              <div class="review-name">Данияр М.</div>
+              <div class="review-date">March 2025 · Google Maps</div>
+            </div>
+          </div>
+          <div class="review-stars">★★★★★</div>
+          <div class="review-text">
+            Наконец-то место в Алматы, где делают нормальные завтраки. Сырники с солёной карамелью — это что-то особенное, я теперь ничего другого не заказываю. Кофе отличный, овсяный латте очень нежный. Достаточно тихо, чтобы поработать утром, и достаточно живо, чтобы чувствовать себя частью города. Твёрдая пятёрка.
+          </div>
+          <span class="review-tag">Сырники · Кофе</span>
+        </div>
+
+        <div class="review-card reveal reveal-d2">
+          <div class="review-quote">"</div>
+          <div class="review-header">
+            <div class="review-avatar rev-a3">M</div>
+            <div>
+              <div class="review-name">Марина Л.</div>
+              <div class="review-date">February 2025 · Google Maps</div>
+            </div>
+          </div>
+          <div class="review-stars">★★★★★</div>
+          <div class="review-text">
+            Привела сюда подругу из Москвы — хотела показать что-то настоящее, алматинское. Она ушла совершенно очарованной. Взяли английский завтрак и Том Ям — оба блюда были великолепны. Декор, музыка, сервис — всё продумано. Это настоящая находка.
+          </div>
+          <span class="review-tag">Завтрак · Том Ям</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VISIT -->
+  <section id="visit" class="section">
+    <div class="container">
+      <div class="visit-grid">
+        <div class="visit-map reveal">
+          <div class="visit-map-pin">
+            <div class="pin-dot"></div>
+            <div class="pin-label">☕ Chad Cafe</div>
+          </div>
+        </div>
+
+        <div class="visit-info">
+          <div>
+            <span class="section-tag reveal">Find Us</span>
+            <h2 class="section-title reveal">Приходи в гости<br/><em style="font-style:italic;color:var(--caramel);">в Алматы</em></h2>
+            <p class="section-sub reveal">
+              Мы на улице Гоголя — одной из самых приятных улиц города для прогулок. Легко найти, сложно уйти.
+            </p>
+          </div>
+
+          <div class="visit-detail reveal">
+            <div class="visit-detail-icon">📍</div>
+            <div>
+              <div class="visit-detail-label">Address</div>
+              <div class="visit-detail-value">ул. Гоголя 13, Алматы</div>
+              <div class="visit-detail-sub">Казахстан — в самом центре города</div>
+            </div>
+          </div>
+
+          <div class="visit-detail reveal reveal-d1">
+            <div class="visit-detail-icon">📞</div>
+            <div>
+              <div class="visit-detail-label">Phone</div>
+              <div class="visit-detail-value">+7 776 532 6969</div>
+              <div class="visit-detail-sub">Звоните или пишите в WhatsApp</div>
+            </div>
+          </div>
+
+          <div class="visit-detail reveal reveal-d2">
+            <div class="visit-detail-icon">🕙</div>
+            <div>
+              <div class="visit-detail-label">Hours</div>
+              <div class="visit-detail-value">Ежедневно — до 22:00</div>
+              <div class="visit-detail-sub">Зал · Навынос · Доставка</div>
+            </div>
+          </div>
+
+          <div class="visit-btns reveal reveal-d3">
+            <a href="tel:+77765326969" class="btn btn-primary">☎ Call Now</a>
+            <a href="https://maps.google.com/?q=Gogol+Street+13,+Almaty,+Kazakhstan" target="_blank" rel="noopener" class="btn btn-outline">🗺 Open in Maps</a>
+            <a href="#" class="btn btn-outline">🛵 Order Delivery</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo-main">Chad Cafe</div>
+        <span class="footer-logo-sub">Eat · Read · Chill</span>
+        <p class="footer-desc">Уютное место в центре Алматы для неспешных утр, хорошего кофе и честной еды.</p>
+      </div>
+
+      <div class="footer-col">
+        <div class="footer-col-title">Menu</div>
+        <a href="#menu">Breakfast & Brunch</a>
+        <a href="#menu">Main Courses</a>
+        <a href="#menu">Desserts</a>
+        <a href="#menu">Coffee & Drinks</a>
+      </div>
+
+      <div class="footer-col">
+        <div class="footer-col-title">Visit</div>
+        <p>ул. Гоголя 13, Алматы</p>
+        <p>+7 776 532 6969</p>
+        <p>Ежедневно до 22:00</p>
+        <p>Зал · Навынос · Доставка</p>
+      </div>
+
+      <div class="footer-col">
+        <div class="footer-col-title">Explore</div>
+        <a href="#about">About the cafe</a>
+        <a href="#atmosphere">Atmosphere</a>
+        <a href="#reviews">Guest reviews</a>
+        <a href="tel:+77765326969">Reserve a table</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2025 Chad Cafe — Almaty, Kazakhstan. All rights reserved.</span>
+      <span class="footer-demo">Demo concept · Portfolio redesign</span>
+    </div>
+  </footer>
+
+  <script>
+    // Sticky nav
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+
+    // Mobile menu
+    const burger = document.getElementById('burger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    burger.addEventListener('click', () => {
+      burger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+    function closeMobileMenu() {
+      burger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    }
+    document.addEventListener('click', (e) => {
+      if (!burger.contains(e.target) && !mobileMenu.contains(e.target)) closeMobileMenu();
+    });
+
+    // Scroll reveal
+    const revealEls = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); revealObserver.unobserve(e.target); }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -36px 0px' });
+    revealEls.forEach(el => revealObserver.observe(el));
+
+    // Smooth anchor scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const t = document.querySelector(a.getAttribute('href'));
+        if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      });
+    });
+  </script>
+</body>
+</html>
